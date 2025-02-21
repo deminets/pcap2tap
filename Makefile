@@ -5,7 +5,12 @@
 # License:             Apache License 2.0
 # Author(s):           Deminets
 
-APPNAME = pcap2tap
+APPNAME		:= pcap2tap
+
+CFLAGS		:= -O2 -Wall
+CXXFLAGS	:= -O2 -Wall -g -lpcap
+CXX			:= g++
+
 
 BLDIR := $(CURDIR)
 define SRCDIR
@@ -15,11 +20,6 @@ endef
 SRCS := $(wildcard $(SRCDIR)/*.cpp)
 OBJS := $(subst $(SRCDIR),$(BLDIR),$(SRCS:.cpp=.cpp.o))
 DEPS := $(subst $(SRCDIR),$(BLDIR),$(SRCS:.cpp=.cpp.dep))
-
-
-CFLAGS = -O2 -Wall
-CXXFLAGS = -O2 -Wall -g -lpcap
-CXX = g++
 
 
 PHONY := all
@@ -51,9 +51,9 @@ clean:
 	@echo "CLEAN"
 	@rm -f $(BLDIR)/*.c.o $(BLDIR)/*.cpp.o $(BLDIR)/*.cpp.dep $(BLDIR)/${APPNAME}
 
-
 .DEFAULT:
 	$(warning !!!WARNING!!!: not found rule for target = '$(@)')
 	@:
 
 .PHONY : $(PHONY)
+
