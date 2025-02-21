@@ -1,6 +1,6 @@
 /* Name:                pcap2tap
  * Date:                2025.02.15
- * Version:             0.1.2
+ * Version:             0.2.3
  * Brief:               Play pcap to TAP.
  * License:             Apache License 2.0
  * Author(s):           Deminets
@@ -13,6 +13,7 @@
 #include <string>
 
 #include "dbgprn.hpp"
+#include "loclang.hpp"
 
 #include <unistd.h>
 #include <pcap/pcap.h>
@@ -32,14 +33,23 @@ public:
 
 	fd = pcap_open_offline(pcapfn.c_str(), errbuf);
 	if (fd == NULL) {
-		DBG_ERR("OPEN(%s) = '%s'\n",pcapfn.c_str(),errbuf);
+		LSW{
+			LS(ru, DBG_ERR("ОШИБКА: ОТКРЫТИЯ(%s) = '%s'\n",pcapfn.c_str(),errbuf); )
+			LD(en, DBG_ERR("ERROR: OPEN(%s) = '%s'\n",pcapfn.c_str(),errbuf); )
+		}
 		exit(1);
 	}
-	DBG_PRN("OPEN(%s)\n",pcapfn.c_str());
+	LSW{
+		LS(ru, DBG_PRN("ОТКРЫТ(%s)\n",pcapfn.c_str()); )
+		LD(en, DBG_PRN("OPEN(%s)\n",pcapfn.c_str()); )
+	}
 }
 
 	~pcap() {
-	DBG_PRN("CLOSE(%s)\n",pcapfn.c_str());
+	LSW{
+		LS(ru, DBG_PRN("ЗАКРЫТИЕ(%s)\n",pcapfn.c_str()); )
+		LD(en, DBG_PRN("CLOSE(%s)\n",pcapfn.c_str()); )
+	}
 	if(fd) pcap_close(fd);
 	fd = NULL;
 }

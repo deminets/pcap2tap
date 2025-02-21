@@ -1,6 +1,6 @@
 # Name:                pcap2tap
 # Date:                2025.02.15
-# Version:             0.1.2
+# Version:             0.2.3
 # Brief:               Play pcap to TAP.
 # License:             Apache License 2.0
 # Author(s):           Deminets

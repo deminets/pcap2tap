@@ -1,13 +1,13 @@
 /* Name:                pcap2tap
  * Date:                2025.02.15
- * Version:             0.1.2
+ * Version:             0.2.3
  * Brief:               Play pcap to TAP.
  * License:             Apache License 2.0
  * Author(s):           Deminets
  * */
 
-#ifndef _PCAPLAY_HPP_
-#define _PCAPLAY_HPP_
+#ifndef _PCAP2TAP_HPP_
+#define _PCAP2TAP_HPP_
 
 #include <list>
 
@@ -22,4 +22,5 @@ public:
 };
 
 
-#endif /* _PCAPLAY_HPP_ */
+#endif /* _PCAP2TAP_HPP_ */
+
