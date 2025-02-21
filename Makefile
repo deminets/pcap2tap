@@ -6,11 +6,16 @@
 # Author(s):           Deminets
 
 APPNAME = pcap2tap
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.cpp.o)
-DEPS = $(SRCS:.cpp=.cpp.dep)
 
-# $(info SRC=$(SRCS))
+BLDIR := $(CURDIR)
+define SRCDIR
+$(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+endef
+
+SRCS := $(wildcard $(SRCDIR)/*.cpp)
+OBJS := $(subst $(SRCDIR),$(BLDIR),$(SRCS:.cpp=.cpp.o))
+DEPS := $(subst $(SRCDIR),$(BLDIR),$(SRCS:.cpp=.cpp.dep))
+
 
 CFLAGS = -O2 -Wall
 CXXFLAGS = -O2 -Wall -g -lpcap
@@ -18,29 +23,33 @@ CXX = g++
 
 
 PHONY := all
-all: ${APPNAME}
+all: $(BLDIR)/${APPNAME}
 
 
-$(APPNAME): $(OBJS)
-	@echo "LINK $@"
+$(BLDIR)/$(APPNAME): $(DEPS) $(OBJS)
+	@echo "LINK $(notdir $@)"
 	@$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
 
 
--include $(DEPS)
-
-%.cpp.dep: %.cpp
-	@echo "DEP $<"
+$(BLDIR)/%.cpp.dep: $(SRCDIR)/%.cpp
+	@echo "DEP $(notdir $<)"
 	@$(CXX) -MM -MT $@ $(CXXFLAGS) -c $< -o $@
 
 
-%.cpp.o: %.cpp %.cpp.dep
-	@echo "CPP $<"
+$(BLDIR)/%.cpp.o: $(SRCDIR)/%.cpp $(BLDIR)/%.cpp.dep
+	@echo "CPP $(notdir $<)"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+ifneq (clean,$(filter clean,$(MAKECMDGOALS)))
+-include $(DEPS)
+endif
 
 
 PHONY += clean
 clean:
-	rm -f *.c.o *.cpp.o *.cpp.dep ${APPNAME}
+	@echo "CLEAN"
+	@rm -f $(BLDIR)/*.c.o $(BLDIR)/*.cpp.o $(BLDIR)/*.cpp.dep $(BLDIR)/${APPNAME}
 
 
 .DEFAULT:
