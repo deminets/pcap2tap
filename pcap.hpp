@@ -21,7 +21,10 @@
 
 typedef struct packet_s {
 	struct pcap_pkthdr hdr;
-	const uint8_t *data;
+	union {
+		const uint8_t *data;
+		const struct ethhdr *eth;
+	};
 } packet_t;
 
 

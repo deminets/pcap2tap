@@ -30,7 +30,7 @@
 
 
 typedef struct mac_s {
-	uint8_t mac[6];
+	uint8_t mac[ETH_ALEN];
 } mac_t;
 
 
@@ -100,10 +100,10 @@ public:
         unsigned int ret = 0;
         
         if(!macs.empty()) {
-                for (auto & it : macs) {
-                        if(memcmp(&p.data[6],it.mac,6) == 0) goto cont;
-                }
-                return(0);
+			for (auto & it : macs) {
+				if(memcmp(&(p.eth->h_source), it.mac, ETH_ALEN) == 0) goto cont;
+			}
+			return(0);
         }
 cont:
         ret = write(dev_fd, p.data, p.hdr.caplen);
