@@ -12,8 +12,7 @@ make
 ```
 Или
 ```
-mkdir buld
-cd build
+mkdir build && cd build
 make -f <путь к исходникам>/Makefile
 ```
 
